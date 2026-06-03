@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>W1 Tambor de LED – Show Flashback</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Raleway:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #06060d;
+    --bg2: #0f0f1e;
+    --neon: #e040fb;
+    --cyan: #00e5ff;
+    --gold: #ffd600;
+    --white: #f0f0ff;
+    --soft: #c0c0d8;
+    --muted: #9090b0;
+    --card: rgba(255,255,255,0.03);
+    --border-neon: rgba(224,64,251,0.12);
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'Raleway', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 6rem 1.5rem 4rem;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background-image: url('FOTO_1_AQUI');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.28;
+    background-color: #1a0a2e;
+  }
+  .hero-overlay {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center top, rgba(224,64,251,0.18) 0%, transparent 60%),
+                radial-gradient(ellipse at center bottom, rgba(0,229,255,0.12) 0%, transparent 60%),
+                linear-gradient(to bottom, #06060d 0%, transparent 30%, transparent 70%, #06060d 100%);
+  }
+  .hero-content {
+    position: relative; z-index: 10;
+    display: flex; flex-direction: column;
+    align-items: center; gap: 1.5rem;
+    max-width: 900px; margin: 0 auto;
+  }
+  .badge {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    padding: 0.3rem 1rem; border-radius: 999px;
+    font-family: 'Oswald', sans-serif; font-size: 0.7rem;
+    font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase;
+  }
+  .badge-neon { background: rgba(224,64,251,0.12); border: 1px solid rgba(224,64,251,0.4); color: var(--neon); }
+  .badge-cyan { background: rgba(0,229,255,0.08); border: 1px solid rgba(0,229,255,0.3); color: var(--cyan); }
+
+  .hero h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(3rem, 10vw, 7.5rem);
+    font-weight: 700; line-height: 0.95;
+    text-transform: uppercase;
+    text-shadow: 0 0 60px rgba(224,64,251,0.5), 0 0 120px rgba(224,64,251,0.25);
+  }
+  .hero h1 .neon { color: var(--neon); }
+  .hero h1 .cyan { color: var(--cyan); text-shadow: 0 0 60px rgba(0,229,255,0.6); }
+
+  .hero p { font-size: clamp(1rem, 2.5vw, 1.25rem); color: var(--soft); max-width: 560px; line-height: 1.7; }
+
+  .hero-fade {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 8rem;
+    background: linear-gradient(to bottom, transparent, #06060d);
+    pointer-events: none;
+  }
+
+  /* BUTTONS */
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 0.7rem;
+    padding: 1rem 2.2rem; border-radius: 999px;
+    background: linear-gradient(135deg, #e040fb, #ab00d6);
+    color: #fff; font-family: 'Oswald', sans-serif;
+    font-size: 1.1rem; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; text-decoration: none;
+    box-shadow: 0 0 40px rgba(224,64,251,0.45); transition: box-shadow 0.3s;
+  }
+  .btn-primary:hover { box-shadow: 0 0 70px rgba(224,64,251,0.7); }
+
+  .btn-gold {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.8rem 1.8rem; border-radius: 999px;
+    background: linear-gradient(135deg, #ffd600, #f59e0b);
+    color: #06060d; font-family: 'Oswald', sans-serif;
+    font-size: 1rem; font-weight: 700; letter-spacing: 0.06em;
+    text-transform: uppercase; text-decoration: none;
+    box-shadow: 0 0 30px rgba(255,214,0,0.3); transition: box-shadow 0.3s;
+  }
+  .btn-gold:hover { box-shadow: 0 0 50px rgba(255,214,0,0.5); }
+
+  /* DIVIDERS */
+  .divider { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+  .divider-neon { height: 1px; background: linear-gradient(90deg, transparent, rgba(224,64,251,0.3), transparent); }
+  .divider-cyan { height: 1px; background: linear-gradient(90deg, transparent, rgba(0,229,255,0.3), transparent); }
+
+  /* SECTIONS */
+  section { padding: 6rem 1.5rem; }
+  .inner { max-width: 1200px; margin: 0 auto; }
+  .neon-bar { width: 48px; height: 4px; border-radius: 999px; background: linear-gradient(90deg, #e040fb, #00e5ff); margin-bottom: 1.5rem; }
+
+  .sec-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700; text-transform: uppercase; line-height: 1.1;
+  }
+
+  /* O QUE É */
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+  .about-text { display: flex; flex-direction: column; gap: 1.2rem; }
+  .about-text p { color: var(--muted); line-height: 1.9; font-size: 1.05rem; }
+  .checks { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.5rem; }
+  .check { display: flex; align-items: center; gap: 0.75rem; }
+  .check .icon { color: var(--neon); font-size: 1.1rem; }
+  .check span { color: var(--soft); font-size: 0.95rem; }
+  .about-img {
+    position: relative; border-radius: 1rem; overflow: hidden; aspect-ratio: 4/5;
+    box-shadow: 0 0 60px rgba(224,64,251,0.2), 0 0 0 1px rgba(224,64,251,0.15);
+    background: #1a0a2e;
+  }
+  .about-img img { width: 100%; height: 100%; object-fit: cover; }
+  .about-img-fade { position: absolute; inset: 0; background: linear-gradient(to top, rgba(6,6,13,0.6) 0%, transparent 50%); }
+  /* Placeholder texto para a foto */
+  .img-placeholder {
+    width: 100%; height: 100%; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 0.5rem;
+    color: rgba(144,144,176,0.4); font-size: 0.85rem; text-align: center; padding: 2rem;
+  }
+  .img-placeholder .emoji { font-size: 3rem; opacity: 0.3; }
+
+  /* FLASHBACK */
+  .flashback { position: relative; overflow: hidden; }
+  .flashback-bg {
+    position: absolute; inset: 0;
+    background-image: url('FOTO_2_AQUI');
+    background-size: cover; background-position: center; opacity: 0.15;
+    background-color: #0a1a2e;
+  }
+  .flashback-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, #06060d 0%, rgba(6,6,13,0.6) 40%, rgba(6,6,13,0.6) 60%, #06060d 100%);
+  }
+  .flashback-inner {
+    position: relative; z-index: 10;
+    max-width: 900px; margin: 0 auto;
+    display: flex; flex-direction: column;
+    align-items: center; text-align: center; gap: 2rem;
+  }
+  .decades { display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center; }
+  .decade-tag {
+    padding: 0.5rem 1.3rem; border-radius: 999px;
+    background: rgba(0,229,255,0.08); border: 1px solid rgba(0,229,255,0.35);
+    color: var(--cyan); font-family: 'Oswald', sans-serif;
+    font-size: 0.9rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .flashback-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(2.2rem, 6vw, 4.5rem);
+    font-weight: 700; text-transform: uppercase; line-height: 1.05;
+  }
+  .flashback-title .gold { color: var(--gold); text-shadow: 0 0 40px rgba(255,214,0,0.5); }
+  .flashback-desc { color: var(--soft); font-size: clamp(1rem, 2.5vw, 1.2rem); line-height: 1.8; max-width: 600px; }
+  .flashback-card {
+    width: 100%; max-width: 480px; border-radius: 1rem; padding: 1.5rem;
+    display: flex; flex-direction: column; align-items: center; gap: 1rem;
+    background: rgba(255,214,0,0.05); border: 1px solid rgba(255,214,0,0.2);
+  }
+  .stars { display: flex; gap: 4px; }
+  .stars span { color: var(--gold); font-size: 1rem; }
+  .flashback-quote { color: #e0e0f0; font-size: 1rem; font-style: italic; line-height: 1.7; }
+
+  /* STEPS */
+  .steps-header { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1rem; margin-bottom: 4rem; }
+  .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
+  .step-card {
+    display: flex; flex-direction: column; gap: 1rem;
+    border-radius: 1rem; padding: 1.5rem;
+    background: var(--card); border: 1px solid var(--border-neon);
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  .step-card:hover { border-color: rgba(224,64,251,0.4); box-shadow: 0 0 30px rgba(224,64,251,0.1); }
+  .step-top { display: flex; align-items: center; justify-content: space-between; }
+  .step-num { font-family: 'Oswald', sans-serif; font-size: 2.5rem; font-weight: 700; color: rgba(224,64,251,0.25); line-height: 1; }
+  .step-arrow { color: rgba(224,64,251,0.3); font-size: 1.2rem; }
+  .step-card h3 { font-family: 'Oswald', sans-serif; font-size: 1.1rem; font-weight: 600; text-transform: uppercase; color: var(--white); line-height: 1.2; }
+  .step-card p { color: var(--muted); font-size: 0.9rem; line-height: 1.7; }
+
+  /* CTA */
+  .cta-box {
+    max-width: 700px; margin: 0 auto; border-radius: 1.5rem; padding: 3rem;
+    display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1.5rem;
+    background: linear-gradient(135deg, rgba(224,64,251,0.12) 0%, rgba(0,229,255,0.08) 100%);
+    border: 1px solid rgba(224,64,251,0.25); box-shadow: 0 0 80px rgba(224,64,251,0.1);
+  }
+  .cta-box h2 { font-family: 'Oswald', sans-serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; text-transform: uppercase; line-height: 1.1; }
+  .cta-box h2 .neon { color: var(--neon); }
+  .cta-box p { color: var(--muted); font-size: 1.05rem; line-height: 1.8; max-width: 480px; }
+  .cta-note { color: #5a5a7a; font-size: 0.8rem; }
+
+  /* FOOTER */
+  footer { padding: 2rem 1.5rem; border-top: 1px solid rgba(255,255,255,0.04); display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+  footer p { color: #3a3a5a; font-size: 0.8rem; }
+
+  /* INSTAGRAM SVG inline */
+  .ig-icon { width: 20px; height: 20px; fill: currentColor; flex-shrink: 0; }
+
+  @media (max-width: 768px) {
+    .about-grid { grid-template-columns: 1fr; }
+    .about-img { aspect-ratio: 16/9; }
+    .cta-box { padding: 2rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="badge badge-neon">⚡ Performance ao vivo</div>
+    <h1>Show de <span class="neon">Tambor</span><br>de <span class="cyan">LED</span></h1>
+    <p>Energia, música e luz em uma única performance. Uma experiência que transforma qualquer evento em algo extraordinário.</p>
+    <a href="https://www.instagram.com/w1tambordeled/" target="_blank" class="btn-primary">
+      <svg class="ig-icon" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      Veja no Instagram
+    </a>
+  </div>
+  <div class="hero-fade"></div>
+</section>
+
+<div class="divider"><div class="divider-neon"></div></div>
+
+<!-- O QUE É -->
+<section>
+  <div class="inner">
+    <div class="about-grid">
+      <div class="about-text">
+        <div class="neon-bar"></div>
+        <h2 class="sec-title">O que é o show de <span style="color:var(--neon)">tambor de LED?</span></h2>
+        <p>O Show de Tambor de LED é uma performance ao vivo com percussionistas profissionais, instrumentos musicais iluminados por LEDs coloridos e muito ritmo. É uma atração visual e sonora que une música, dança e luz numa explosão de energia.</p>
+        <p>Ideal para abertura de pista, recepcionar convidados, animar festas corporativas, casamentos, eventos sociais e muito mais. Quem vê, nunca esquece!</p>
+        <ul class="checks">
+          <li class="check"><span class="icon">✓</span><span>Percussionistas profissionais ao vivo</span></li>
+          <li class="check"><span class="icon">✓</span><span>Instrumentos com iluminação LED</span></li>
+          <li class="check"><span class="icon">✓</span><span>Performances dinâmicas e animadas</span></li>
+          <li class="check"><span class="icon">✓</span><span>Alta energia do início ao fim</span></li>
+        </ul>
+      </div>
+      <div class="about-img">
+        <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Image%202026-05-29%20at%2011.38.05-iW0SeTdZU5mjjpCSvGvGCsXE4nxnD8.jpeg" alt="Show de Tambor de LED">
+        <div class="about-img-fade"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-neon"></div></div>
+
+<!-- SHOW FLASHBACK -->
+<section class="flashback">
+  <div class="flashback-bg"></div>
+  <div class="flashback-overlay"></div>
+  <div class="flashback-inner">
+    <div class="decades">
+      <span class="decade-tag">Anos 70</span>
+      <span class="decade-tag">Anos 80</span>
+      <span class="decade-tag">Anos 90</span>
+    </div>
+    <h2 class="flashback-title">Show <span class="gold">Flashback</span></h2>
+    <p class="flashback-desc">
+      Temos o show de tambor de LED com um repertório especialmente voltado para os
+      <strong style="color:var(--gold)">anos 70, 80 e 90</strong>. Músicas que marcaram gerações, apresentadas com toda a energia e luz que só os nossos tambores de LED proporcionam.
+    </p>
+    <div class="flashback-card">
+      <div class="stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+      <p class="flashback-quote">"Olhe aqui o nosso flashback — uma noite de muito ritmo, luz e as músicas que você ama!"</p>
+      <a href="https://www.instagram.com/p/DYiSPO3OlkM/" target="_blank" class="btn-gold">
+        <svg class="ig-icon" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        Ver o Flashback no Instagram
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-cyan"></div></div>
+
+<!-- COMO CONTRATAR -->
+<section>
+  <div class="inner">
+    <div class="steps-header">
+      <div class="badge badge-cyan">📞 É simples e rápido</div>
+      <h2 class="sec-title">Como funciona a <span style="color:var(--cyan)">contratação?</span></h2>
+      <p style="color:var(--muted);max-width:480px;line-height:1.8">Nunca contratou um show de tambor de LED antes? Sem problemas! Veja como é simples:</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-top"><span class="step-num">01</span><span class="step-arrow">›</span></div>
+        <h3>Entre em contato</h3>
+        <p>Mande uma mensagem no Instagram ou WhatsApp contando sobre o seu evento — data, local e número de convidados.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-top"><span class="step-num">02</span><span class="step-arrow">›</span></div>
+        <h3>Verificação de disponibilidade</h3>
+        <p>Verificamos a agenda e confirmamos se a data está disponível para a sua celebração.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-top"><span class="step-num">03</span><span class="step-arrow">›</span></div>
+        <h3>Receba a proposta</h3>
+        <p>Enviamos uma proposta personalizada com tudo que você precisa saber sobre o show.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-top"><span class="step-num">04</span></div>
+        <h3>Confirme e comemore!</h3>
+        <p>Com tudo acertado, é só aguardar o dia e se preparar para uma noite inesquecível de energia e música!</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section style="padding-top:0">
+  <div class="cta-box">
+    <div style="display:flex;align-items:center;gap:0.75rem;font-size:1.8rem">🎵 ⚡</div>
+    <h2>Pronto para transformar <span class="neon">seu evento?</span></h2>
+    <p>Siga nosso Instagram e entre em contato. Vamos fazer do seu evento uma noite inesquecível!</p>
+    <a href="https://www.instagram.com/w1tambordeled/" target="_blank" class="btn-primary" style="font-size:1.15rem;padding:1.1rem 2.5rem;box-shadow:0 0 50px rgba(224,64,251,0.5)">
+      <svg class="ig-icon" style="width:22px;height:22px" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      Clique aqui — Instagram
+    </a>
+    <p class="cta-note">Sem compromisso. Só energia e música!</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>Show de Tambor de LED · Transformando eventos com energia e luz</p>
+  <p>@w1tambordeled · (51) 99282-3663</p>
+</footer>
+
+</body>
+</html>

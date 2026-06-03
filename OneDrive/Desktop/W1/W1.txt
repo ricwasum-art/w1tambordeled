@@ -1,0 +1,34 @@
+W1
+
+fazer material especifico para show de tambor de led o que é? uma coisa animada com percussionista, com instrumentos musicais, com performances animadas iluminadas e muita energia , sem valores, so explicando com foto e vídeo máximo 2 fotos e um clique aqui indo pro Instagram para prospectar clientes, show tematicos fazer com o do flashback, "a temos o show de tambor de led olhe aqui o nosso flashback com repertorio voltado para os anos 70 80 90, como funciona a contratação, um passo a passo igual o site, um coisa bem geral, pra pessoa que nao sabe nada sobre os tambores, foto bem explicativo e links para o instagram. 
+
+SITE Modificações
+
+Botar a logo no canto de todas as paginas 
+
+1.Tela
+Na primeira pagina tirar o "FORMATURAS CASAMENTOS FESTAS" e trocar por "CASAMENTOS, 15 ANOS, EVENTO EMPRESERAIAL, EVENTOS TEMATICOS"
+Tirar o texto Uma experiência eletrizante que transforma qualquer evento em uma verdadeira explosão de energia — ao vivo, com tambores de LED, glitter e muito ritmo e o "SOLICITAR ORÇAMENTO E VER PORTFOLIO" e o espaço pro vídeo, em vez disso vamos puxar a tela 5 pra tela 1 e dividir em 3 tópicos como 15 anos e um vídeo de 15 anos, casamento e um vídeo de casamento, vídeo temático e um vídeo de show temático
+
+2.Tela
+ta boa, so precisa botar uma <imagem>
+
+3.Tela
+No "02 PLANEJAMOS JUNTOS" tirar o "Definimos as músicas, as cores das luzes e a coreografia da entrada junto com você." e colocar " Criamos uma setlist exclusiva para o seu evento. Suas músicas favoritas são organizadas e enviadas ao DJ, garantindo uma apresentação incrível"
+no "04 o show acontece" tirar o "BOQUIABERTOS" e trocar por "todos amam"
+
+4.Tela
+portfólio
+ainda ver, fazer carrossel de fotos 
+
+5. Tela 
+Vai la pra cima, no lugar de formatura botar evento temático e dar o flashback como exemplo
+
+6. Tela
+Além de fotos dos depoimentos botar vídeos, fazer carrossel também.
+
+
+
+
+
+
